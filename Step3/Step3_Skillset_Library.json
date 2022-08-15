@@ -1,0 +1,109 @@
+{
+  "@odata.context": "https://trainingcataloguesearch.search.windows.net/$metadata#skillsets/$entity",
+  "@odata.etag": "\"0x8DA7EF3B7FE3BE7\"",
+  "name": "oaoers-skillset",
+  "description": "Skillset created from the portal. skillsetName: oaoers-skillset; contentField: content; enrichmentGranularity: document; knowledgeStoreStorageAccount: ;",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.V3.EntityRecognitionSkill",
+      "name": "#1",
+      "description": null,
+      "context": "/document/content",
+      "categories": [
+        "Product",
+        "PhoneNumber",
+        "Person",
+        "Quantity",
+        "Organization",
+        "IPAddress",
+        "URL",
+        "Email",
+        "Event",
+        "Skill",
+        "Location",
+        "PersonType",
+        "Address",
+        "DateTime"
+      ],
+      "defaultLanguageCode": "en",
+      "minimumPrecision": null,
+      "modelVersion": null,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "persons",
+          "targetName": "author"
+        },
+        {
+          "name": "organizations",
+          "targetName": "institutions"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+      "name": "#2",
+      "description": null,
+      "context": "/document/content",
+      "defaultLanguageCode": "en",
+      "maxKeyPhraseCount": null,
+      "modelVersion": null,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "keyPhrases",
+          "targetName": "phrases"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+      "name": "#3",
+      "description": "Enrich data set using an API to retrieve article information based on ArticleName",
+      "context": "/document",
+      "uri": "https://papers-library.azurewebsites.net/api/springerlookup?code=6OfPYgJmgAlTv_fFZs4wOZQwAJ06VolaBCuG9wbIqmK1AzFuE-TKnQ==",
+      "httpMethod": "POST",
+      "timeout": "PT30S",
+      "batchSize": 10,
+      "degreeOfParallelism": 1,
+      "inputs": [
+        {
+          "name": "articleName",
+          "source": "/document/metadata_title"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "publicationName",
+          "targetName": "publicationName"
+        },
+        {
+          "name": "publisher",
+          "targetName": "publisher"
+        },
+        {
+          "name": "doi",
+          "targetName": "DOI"
+        },
+        {
+          "name": "publicationDate",
+          "targetName": "publicationDate"
+        }
+      ],
+      "httpHeaders": {}
+    }
+  ],
+  "cognitiveServices": null,
+  "knowledgeStore": null,
+  "encryptionKey": null
+}

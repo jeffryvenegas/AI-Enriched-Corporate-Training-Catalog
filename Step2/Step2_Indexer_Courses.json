@@ -1,0 +1,50 @@
+{
+    "@odata.context": "https://trainingcataloguesearch.search.windows.net/$metadata#indexers/$entity",
+    "@odata.etag": "\"0x8DA7B5B1D6B1749\"",
+    "name": "papers-indexer",
+    "description": "",
+    "dataSourceName": "papers-blob",
+    "skillsetName": "oaoers-skillset",
+    "targetIndexName": "papers-index",
+    "disabled": null,
+    "schedule": {
+      "interval": "P1D",
+      "startTime": "2022-08-05T05:34:06.008Z"
+    },
+    "parameters": {
+      "batchSize": null,
+      "maxFailedItems": 0,
+      "maxFailedItemsPerBatch": 0,
+      "base64EncodeKeys": null,
+      "configuration": {
+        "dataToExtract": "contentAndMetadata",
+        "parsingMode": "default"
+      }
+    },
+    "fieldMappings": [
+      {
+        "sourceFieldName": "metadata_storage_path",
+        "targetFieldName": "metadata_storage_path",
+        "mappingFunction": {
+          "name": "base64Encode",
+          "parameters": null
+        }
+      }
+    ],
+    "outputFieldMappings": [
+      {
+        "sourceFieldName": "/document/content/author",
+        "targetFieldName": "author"
+      },
+      {
+        "sourceFieldName": "/document/content/institutions",
+        "targetFieldName": "institutions"
+      },
+      {
+        "sourceFieldName": "/document/content/phrases",
+        "targetFieldName": "phrases"
+      }
+    ],
+    "cache": null,
+    "encryptionKey": null
+  }

@@ -14,16 +14,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Udacity.springerlookupdemo
 {
-    
     public static class SpringerLookup
     {
-        
-        /* 
-
-          This is where you will configure your Spring API Key
-          
-        */
-        static readonly string apikey = "<insert API credential here>";
         static readonly string springerapiendpoint = "http://api.springernature.com/openaccess/json";
 
         #region Class used to deserialize the request
@@ -75,7 +67,7 @@ namespace Udacity.springerlookupdemo
 
         [FunctionName("SpringerLookup")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log, ExecutionContext context)
         {
            log.LogInformation("Entity Search function: C# HTTP trigger function processed a request.");
 
@@ -109,7 +101,7 @@ namespace Udacity.springerlookupdemo
 
                 try
                 {
-                    responseRecord.Data = GetEntityMetadata(record.Data.ArticleName).Result;
+                    responseRecord.Data = await GetEntityMetadata(record.Data.ArticleName, System.Environment.GetEnvironmentVariable("apiKey"));
                 }
                 catch (Exception e)
                 {
@@ -136,9 +128,9 @@ namespace Udacity.springerlookupdemo
         #region Methods to call the Springer API
         
         
-        private async static Task<OutputRecord.OutputRecordData> GetEntityMetadata(string title)
+        private async static Task<OutputRecord.OutputRecordData> GetEntityMetadata(string title, string apiKey)
         {
-            var uri = springerapiendpoint + "?q=title:\"" + title + "\"&api_key=" + apikey;
+            var uri = springerapiendpoint + "?q=title:\"" + title + "\"&api_key=" + apiKey;
             var result = new OutputRecord.OutputRecordData();
 
             using (var client = new HttpClient())
