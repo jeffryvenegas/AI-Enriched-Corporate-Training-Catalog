@@ -93,15 +93,10 @@
 </body>
 
 <script>
-    /* 
-        The following two constants configure this for your Cognitive Search. 
-        api-key is the key is found under 'Keys'
-        serviceUrl is found in the Overview
-    */
     const opts = {
-        headers: {'Content-Type': 'application/json', 'api-key':'<insert key here>'}
+        headers: {'Content-Type': 'application/json', 'api-key':'QQxfhGTjgDv3jA1wciD2wFplmokfzt9lHzJwtoT5GaAzSeBKGKcx'}
     }
-    const serviceUrl = 'https://<insert service name here>.search.windows.net'
+    const serviceUrl = 'https://trainingcataloguesearch.search.windows.net'
     
     /* 
         This demo app uses Vue.js, a progressive framework for building user interfaces.  
@@ -157,7 +152,7 @@
                 return f;
             },
             baseUrl: function(){
-                return `${serviceUrl}/indexes/azuretable-index/docs?api-version=2020-06-30`
+                return `${serviceUrl}/indexes/courses-indexv2/docs?api-version=2020-06-30`
             }
         }
     })
